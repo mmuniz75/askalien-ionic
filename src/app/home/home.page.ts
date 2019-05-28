@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
 export class HomePage {
 
   constructor() {}
-
+  
+  onClose(){
+    if(navigator && navigator['app'])
+      navigator['app'].exitApp();
+  }
 }

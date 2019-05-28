@@ -1,5 +1,7 @@
 {
   "name": "askalien-ionic",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
