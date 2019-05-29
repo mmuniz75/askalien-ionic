@@ -6,7 +6,7 @@
       <ion-buttons slot="primary" (click)="openFeedBack()">
           <ion-icon name="mail" slot="icon-only" ></ion-icon>
       </ion-buttons>
-    <ion-title>Answer 172</ion-title>
+    <ion-title>Answer {{ answer.number }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,8 +21,8 @@
         <ion-row>
           <ion-col>
             <div class="detail">
-            <p>You will realize that physical limitation does not matter after reaching certain levels of mental strength. Much can be handled by more advanced minds, moved, altered, programmed and produced at other levels of technological development. 
-                The Zigs and other insectoids can do everything you do, much faster and more accurate than you might imagine.</p>
+            <p [innerHTML]='answer.content'></p>
+            <i>{{ answer.date }}</i>
             </div>    
           </ion-col>
         </ion-row>

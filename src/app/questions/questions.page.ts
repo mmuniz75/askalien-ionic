@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class QuestionsPage implements OnInit {
 
   questions:IQuestion[];
+  searchText : String;
 
   constructor(private askService: AskService,
               private route: ActivatedRoute) { }
@@ -18,9 +19,9 @@ export class QuestionsPage implements OnInit {
   ngOnInit() {
 
     this.route.paramMap.subscribe(paramMap => {
-         const question = paramMap.get('question');
+         this.searchText = paramMap.get('question');
 
-         this.askService.ask(question)
+         this.askService.ask(this.searchText)
                         .subscribe(questions => this.questions=questions);
       }
     )  
