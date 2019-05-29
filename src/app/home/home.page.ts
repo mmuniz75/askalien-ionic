@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  @ViewChild('f') form: NgForm;
 
   constructor(private router: Router) {}
   
@@ -17,6 +19,6 @@ export class HomePage {
   }
 
   onSearch(){
-    this.router.navigateByUrl('/questions');
+    this.router.navigateByUrl('/questions/' + this.form.value['question']);
   }
 }
