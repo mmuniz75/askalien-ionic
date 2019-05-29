@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-back-button text="" defaultHref="/answer"></ion-back-button>
+      </ion-buttons>
+    <ion-title>Leave your feedback</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form (ngSubmit)="sendFeedBack()" #f="ngForm">
+        <ion-grid>
+           <ion-row>
+            <ion-col size-sm="6" offset-sm="3">
+              <ion-item>
+                <ion-label position="floating">Name</ion-label>
+                <ion-input
+                  type="text"
+                  ngModel
+                  name="name"
+                  required
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col size-sm="6" offset-sm="3">
+                <ion-item>
+                  <ion-label position="floating">Email</ion-label>
+                  <ion-input
+                    type="email"
+                    email
+                    ngModel
+                    name="email"
+                    required
+                  ></ion-input>
+                </ion-item>
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col size-sm="6" offset-sm="3">
+                <ion-item>
+                  <ion-label position="floating">Comment</ion-label>
+                  <ion-textarea
+                    rows=3
+                    type="text"
+                    ngModel
+                    name="comment"
+                    required
+                  ></ion-textarea>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          <ion-row>
+            <ion-col size-sm="6" offset-sm="3">
+              <ion-button margin-top
+                type="submit"
+                color="primary"
+                expand="block"
+                [disabled]="!f.valid"
+              >
+                Send Feedback
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+</ion-content>
