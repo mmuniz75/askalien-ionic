@@ -11,9 +11,9 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./answer.page.scss'],
 })
 export class AnswerPage implements OnInit, OnDestroy {
-  answer : IAnswer;
+  answer: IAnswer;
   private serviceSubscription: Subscription;
-  
+
   constructor(private router: Router,
               private askService: AskService,
               private route: ActivatedRoute,
@@ -24,7 +24,7 @@ export class AnswerPage implements OnInit, OnDestroy {
       const id = paramMap.get('id');
       const question = paramMap.get('question');
 
-      if(!this.answer){
+      if (!this.answer) {
 
         this.loadingCtrl
         .create({
@@ -32,25 +32,25 @@ export class AnswerPage implements OnInit, OnDestroy {
         })
         .then(loadingEl => {
           loadingEl.present();
-          this.serviceSubscription = this.askService.getAnswer(+id,question)
+          this.serviceSubscription = this.askService.getAnswer(+id, question)
                                                     .subscribe(answer => {
                                                                           loadingEl.dismiss();
-                                                                          this.answer=answer
+                                                                          this.answer = answer;
                                                                         });
         });
        }
-        
-   }
- )  
+      }
+    );
   }
 
-  openFeedBack(){
-    this.router.navigate(['/feedback',this.answer.questionId]);
+  openFeedBack() {
+    this.router.navigate(['/feedback', this.answer.questionId]);
   }
 
-  ngOnDestroy(){
-    if(this.serviceSubscription)
+  ngOnDestroy() {
+    if (this.serviceSubscription) {
       this.serviceSubscription.unsubscribe();
+    }
   }
 
 }

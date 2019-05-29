@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AskService } from '../shared/ask.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -13,9 +13,9 @@ import { LoadingController, AlertController } from '@ionic/angular';
 })
 export class FeedbackPage implements OnInit, OnDestroy {
   @ViewChild('f') form: NgForm;
-  questionId:Number;
+  questionId: number;
   private serviceSubscription: Subscription;
-  
+
   constructor(private location: Location,
               private askService: AskService,
               private route: ActivatedRoute,
@@ -26,13 +26,13 @@ export class FeedbackPage implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(paramMap => {
                                                 this.questionId = +paramMap.get('questionId');
                                               }
-                                  )
+                                  );
   }
 
-  sendFeedBack(){
-    const name = this.form.value["name"];
-    const email = this.form.value["email"];
-    const comment = this.form.value["comment"];
+  sendFeedBack() {
+    const name = this.form.value.name;
+    const email = this.form.value.email;
+    const comment = this.form.value.comment;
 
     this.loadingCtrl
               .create({
@@ -41,14 +41,14 @@ export class FeedbackPage implements OnInit, OnDestroy {
               .then(loadingEl => {
                 loadingEl.present();
 
-                this.serviceSubscription = this.askService.sendFeedBack(this.questionId,name,email,comment)
+                this.serviceSubscription = this.askService.sendFeedBack(this.questionId, name, email, comment)
                 .subscribe(response => {
                         loadingEl.dismiss();
                         this.presentAlert();
 
                 });
-              })
-  
+              });
+
   }
 
   async presentAlert() {
@@ -62,9 +62,10 @@ export class FeedbackPage implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  ngOnDestroy(){
-    if(this.serviceSubscription)
+  ngOnDestroy() {
+    if (this.serviceSubscription) {
       this.serviceSubscription.unsubscribe();
+    }
   }
 
 }

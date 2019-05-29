@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AskService } from '../shared/ask.service';
 import { IQuestion } from '../model/question';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-questions',
@@ -12,20 +12,22 @@ import { LoadingController } from '@ionic/angular';
 })
 export class QuestionsPage implements OnInit, OnDestroy {
 
-  questions:IQuestion[];
-  searchText : String;
+  questions: IQuestion[];
+  searchText: string;
   private serviceSubscription: Subscription;
 
-  constructor(private askService: AskService,
+  constructor(private router: Router,
+              private askService: AskService,
               private route: ActivatedRoute,
-              private loadingCtrl: LoadingController) { }
+              private loadingCtrl: LoadingController,
+              private alertController: AlertController) { }
 
   ngOnInit() {
 
     this.route.paramMap.subscribe(paramMap => {
          this.searchText = paramMap.get('question');
 
-         if(!this.questions) {
+         if (!this.questions) {
 
           this.loadingCtrl
           .create({
@@ -36,18 +38,33 @@ export class QuestionsPage implements OnInit, OnDestroy {
             this.serviceSubscription = this.askService.ask(this.searchText)
             .subscribe(questions => {
                 loadingEl.dismiss();
-                this.questions=questions
+                if (!questions || questions.length === 0) {
+                  this.presentAlert();
+                } else {
+                  this.questions = questions;
+                }
             });
           });
-         }                 
+         }
       }
-    )  
+    );
 
   }
 
-  ngOnDestroy(){
-    if(this.serviceSubscription)
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'No questions found',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+    this.router.navigateByUrl('/home');
+  }
+
+  ngOnDestroy() {
+    if (this.serviceSubscription) {
       this.serviceSubscription.unsubscribe();
+    }
   }
 
-}  
+}
