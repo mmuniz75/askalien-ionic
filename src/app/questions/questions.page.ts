@@ -20,9 +20,10 @@ export class QuestionsPage implements OnInit {
 
     this.route.paramMap.subscribe(paramMap => {
          this.searchText = paramMap.get('question');
-
-         this.askService.ask(this.searchText)
-                        .subscribe(questions => this.questions=questions);
+         
+         if(!this.questions)
+          this.askService.ask(this.searchText)
+                          .subscribe(questions => this.questions=questions);
       }
     )  
 

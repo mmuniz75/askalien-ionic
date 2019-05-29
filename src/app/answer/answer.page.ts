@@ -20,8 +20,9 @@ export class AnswerPage implements OnInit {
       const id = paramMap.get('id');
       const question = paramMap.get('question');
 
-      this.askService.getAnswer(+id,question)
-                     .subscribe(answer => this.answer=answer);
+      if(!this.answer)
+        this.askService.getAnswer(+id,question)
+                      .subscribe(answer => this.answer=answer);
    }
  )  
   }
