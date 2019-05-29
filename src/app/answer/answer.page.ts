@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AskService } from '../shared/ask.service';
-import { IQuestion } from '../model/question';
 import { IAnswer } from '../model/answer';
 
 @Component({
@@ -11,7 +10,7 @@ import { IAnswer } from '../model/answer';
 })
 export class AnswerPage implements OnInit {
   answer : IAnswer;
-
+  
   constructor(private router: Router,
               private askService: AskService,
               private route: ActivatedRoute) { }
@@ -28,7 +27,7 @@ export class AnswerPage implements OnInit {
   }
 
   openFeedBack(){
-    this.router.navigateByUrl('/feedback');
+    this.router.navigate(['/feedback',this.answer.questionId]);
   }
 
 }

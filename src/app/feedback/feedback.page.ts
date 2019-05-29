@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AskService } from '../shared/ask.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-feedback',
@@ -9,14 +11,29 @@ import { Router } from '@angular/router';
 })
 export class FeedbackPage implements OnInit {
   @ViewChild('f') form: NgForm;
+  questionId:Number;
   
-  constructor(private router:Router) { }
+  constructor(private location: Location,
+              private askService: AskService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(paramMap => {
+                                                this.questionId = +paramMap.get('questionId');
+                                              }
+                                  )
   }
 
   sendFeedBack(){
-    this.router.navigateByUrl('/questions');
+    const name = this.form.value["name"];
+    const email = this.form.value["email"];
+    const comment = this.form.value["comment"];
+    
+    this.askService.sendFeedBack(this.questionId,name,email,comment)
+    .subscribe(response =>
+            this.location.back()
+    );
+ 
   }
 
 }
