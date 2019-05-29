@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "askalien-ionic",
+  "appId": "edu.muniz.universeguide.mobile",
+  "appName": "Ask Alien",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www"
