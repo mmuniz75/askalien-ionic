@@ -6,7 +6,7 @@
       <ion-buttons slot="primary" (click)="openFeedBack()">
           <ion-icon name="mail" slot="icon-only" ></ion-icon>
       </ion-buttons>
-    <ion-title>Answer {{ answer.number }}</ion-title>
+    <ion-title>Answer {{ answer?answer.number:'' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,8 +21,8 @@
         <ion-row>
           <ion-col>
             <div class="detail">
-            <p [innerHTML]='answer.content'></p>
-            <i>{{ answer.date }}</i>
+            <p *ngIf="answer" [innerHTML]='answer.content'></p>
+            <i *ngIf="answer">{{ answer.date }}</i>
             </div>    
           </ion-col>
         </ion-row>
