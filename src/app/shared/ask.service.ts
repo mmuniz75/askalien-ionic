@@ -39,9 +39,8 @@ export class AskService {
 
 
       public configServer() {
-            return this.http.get(SERVER_CONF)
+            return this.http.get<IServer>(SERVER_CONF)
                   .pipe(
-                        map( (response: Response) => <IServer>response.json()),
                         catchError(this.handleError)
                   );
      }
