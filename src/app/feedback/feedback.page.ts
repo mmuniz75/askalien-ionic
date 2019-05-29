@@ -5,6 +5,7 @@ import { AskService } from '../shared/ask.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { LoadingController, AlertController } from '@ionic/angular';
+import { presentDataError, presentAlert } from '../shared/consts';
 
 @Component({
   selector: 'app-feedback',
@@ -23,10 +24,8 @@ export class FeedbackPage implements OnInit, OnDestroy {
               private alertController: AlertController) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-                                                this.questionId = +paramMap.get('questionId');
-                                              }
-                                  );
+    this.route.paramMap
+    .subscribe(paramMap => {this.questionId = +paramMap.get('questionId'); });
   }
 
   sendFeedBack() {
@@ -44,22 +43,16 @@ export class FeedbackPage implements OnInit, OnDestroy {
                 this.serviceSubscription = this.askService.sendFeedBack(this.questionId, name, email, comment)
                 .subscribe(response => {
                         loadingEl.dismiss();
-                        this.presentAlert();
+                        presentAlert(this.alertController, 'Feed back sent', 'Thank\'s for answer that.');
+                        this.location.back();
 
+                }
+                , error => {
+                  loadingEl.dismiss();
+                  presentDataError(this.alertController);
                 });
               });
 
-  }
-
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Feed back sent',
-      message: 'Thank\'s for answer that.',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-    this.location.back();
   }
 
   ngOnDestroy() {
