@@ -3,7 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AskService } from '../shared/ask.service';
 import { IAnswer } from '../model/answer';
 import { Subscription } from 'rxjs';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
+import { presentDataError } from '../shared/consts';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-answer',
@@ -17,7 +19,9 @@ export class AnswerPage implements OnInit, OnDestroy {
   constructor(private router: Router,
               private askService: AskService,
               private route: ActivatedRoute,
-              private loadingCtrl: LoadingController) { }
+              private loadingCtrl: LoadingController,
+              private alertController: AlertController,
+              private location: Location) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -36,7 +40,12 @@ export class AnswerPage implements OnInit, OnDestroy {
                                                     .subscribe(answer => {
                                                                           loadingEl.dismiss();
                                                                           this.answer = answer;
-                                                                        });
+                                                                        },
+                                                                error => {
+                                                                    loadingEl.dismiss();
+                                                                    presentDataError(this.alertController);
+                                                                    this.location.back();
+                                                                  });
         });
        }
       }

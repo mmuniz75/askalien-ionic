@@ -4,6 +4,7 @@ import { IQuestion } from '../model/question';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoadingController, AlertController } from '@ionic/angular';
+import { presentAlert, presentDataError } from '../shared/consts';
 
 @Component({
   selector: 'app-questions',
@@ -39,14 +40,16 @@ export class QuestionsPage implements OnInit, OnDestroy {
             .subscribe(questions => {
                 loadingEl.dismiss();
                 if (!questions || questions.length === 0) {
-                  this.presentAlert('No questions found', null);
+                  presentAlert(this.alertController, 'No questions found', null);
+                  this.router.navigateByUrl('/home');
                 } else {
                   this.questions = questions;
                 }
             },
             error => {
                 loadingEl.dismiss();
-                this.presentAlert('Failed to retriev data', 'Please try again later');
+                presentDataError(this.alertController);
+                this.router.navigateByUrl('/home');
               }
             );
           });
@@ -56,16 +59,7 @@ export class QuestionsPage implements OnInit, OnDestroy {
 
   }
 
-  async presentAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK']
-    });
 
-    await alert.present();
-    this.router.navigateByUrl('/home');
-  }
 
   ngOnDestroy() {
     if (this.serviceSubscription) {
