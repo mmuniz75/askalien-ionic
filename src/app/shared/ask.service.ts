@@ -31,7 +31,7 @@ export class AskService {
       }
 
 
-      getAnswer(id: Number, search: String): Observable<IAnswer> {
+      getAnswer(id: number, search: string): Observable<IAnswer> {
             const anwerUrl = 'http://' + environment.SERVER_URL + '/answer/';
             return this._http.get(anwerUrl + "/" + id + "?question=" + search)
                   .pipe(
@@ -42,18 +42,14 @@ export class AskService {
 
 
       public configServer() {
-            this._http.get(SERVER_CONF)
+            return this._http.get(SERVER_CONF)
                   .pipe(
                         map( (response: Response) => <IServer>response.json()),
                         catchError(this.handleError)
-                  )
-                  .subscribe(server => 
-                        environment.SERVER_URL = server.server
                   );
      }
-      
 
-      sendFeedBack(questionId: Number, name: String, email: String, comments: String): Observable<any> {
+      sendFeedBack(questionId: number, name: string, email: string, comments: string): Observable<any> {
             const feedBackUrl = 'http://' + environment.SERVER_URL + '/feedback';
             let headers = new Headers({ 'Content-Type': 'application/json' });
             let options = new RequestOptions({ headers: headers, method: "post" });
@@ -77,8 +73,8 @@ export class AskService {
 }
 
 export class Comment {
-      id: Number;
-      email: String;
-      creator: String;
-      feedback: String;
+      id: number;
+      email: string;
+      creator: string;
+      feedback: string;
 }

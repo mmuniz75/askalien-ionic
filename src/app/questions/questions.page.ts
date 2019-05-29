@@ -59,8 +59,6 @@ export class QuestionsPage implements OnInit, OnDestroy {
 
   }
 
-
-
   ngOnDestroy() {
     if (this.serviceSubscription) {
       this.serviceSubscription.unsubscribe();
