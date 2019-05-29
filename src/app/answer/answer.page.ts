@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AskService } from '../shared/ask.service';
 import { IAnswer } from '../model/answer';
 import { Subscription } from 'rxjs';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-answer',
@@ -15,16 +16,30 @@ export class AnswerPage implements OnInit, OnDestroy {
   
   constructor(private router: Router,
               private askService: AskService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       const id = paramMap.get('id');
       const question = paramMap.get('question');
 
-      if(!this.answer)
-        this.serviceSubscription = this.askService.getAnswer(+id,question)
-                                    .subscribe(answer => this.answer=answer);
+      if(!this.answer){
+
+        this.loadingCtrl
+        .create({
+          message: 'Loading answer...'
+        })
+        .then(loadingEl => {
+          loadingEl.present();
+          this.serviceSubscription = this.askService.getAnswer(+id,question)
+                                                    .subscribe(answer => {
+                                                                          loadingEl.dismiss();
+                                                                          this.answer=answer
+                                                                        });
+        });
+       }
+        
    }
  )  
   }
