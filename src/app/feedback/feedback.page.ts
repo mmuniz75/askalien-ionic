@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AskService } from '../shared/ask.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-feedback',
@@ -17,7 +18,8 @@ export class FeedbackPage implements OnInit, OnDestroy {
   
   constructor(private location: Location,
               private askService: AskService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -30,12 +32,21 @@ export class FeedbackPage implements OnInit, OnDestroy {
     const name = this.form.value["name"];
     const email = this.form.value["email"];
     const comment = this.form.value["comment"];
-    
-    this.serviceSubscription = this.askService.sendFeedBack(this.questionId,name,email,comment)
-    .subscribe(response =>
-            this.location.back()
-    );
- 
+
+    this.loadingCtrl
+              .create({
+                message: 'Sending feed back...'
+              })
+              .then(loadingEl => {
+                loadingEl.present();
+
+                this.serviceSubscription = this.askService.sendFeedBack(this.questionId,name,email,comment)
+                .subscribe(response => {
+                        loadingEl.dismiss();
+                        this.location.back();
+                });
+              })
+  
   }
 
   ngOnDestroy(){
