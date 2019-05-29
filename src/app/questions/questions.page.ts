@@ -39,11 +39,16 @@ export class QuestionsPage implements OnInit, OnDestroy {
             .subscribe(questions => {
                 loadingEl.dismiss();
                 if (!questions || questions.length === 0) {
-                  this.presentAlert();
+                  this.presentAlert('No questions found', null);
                 } else {
                   this.questions = questions;
                 }
-            });
+            },
+            error => {
+                loadingEl.dismiss();
+                this.presentAlert('Failed to retriev data', 'Please try again later');
+              }
+            );
           });
          }
       }
@@ -51,9 +56,10 @@ export class QuestionsPage implements OnInit, OnDestroy {
 
   }
 
-  async presentAlert() {
+  async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'No questions found',
+      header,
+      message,
       buttons: ['OK']
     });
 
