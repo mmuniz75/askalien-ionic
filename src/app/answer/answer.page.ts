@@ -26,7 +26,7 @@ export class AnswerPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       const id = paramMap.get('id');
-      const question = paramMap.get('question');
+      let question = paramMap.get('question');
 
       if (!this.answer) {
 
@@ -36,6 +36,7 @@ export class AnswerPage implements OnInit, OnDestroy {
         })
         .then(loadingEl => {
           loadingEl.present();
+          question = question.concat(' (IONIC)');
           this.serviceSubscription = this.askService.getAnswer(+id, question)
                                                     .subscribe(answer => {
                                                                           loadingEl.dismiss();
