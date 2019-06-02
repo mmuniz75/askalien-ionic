@@ -3,7 +3,7 @@
     <ion-title>
       Ask Alien
     </ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf='isAndroid'>
       <ion-button (click)="onClose()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
       </ion-button>

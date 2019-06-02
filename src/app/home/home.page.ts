@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { AskService } from '../shared/ask.service';
 import { Subscription } from 'rxjs';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +16,11 @@ export class HomePage  implements OnInit, OnDestroy{
   private serviceSubscription: Subscription;
 
   constructor(private router: Router,
-              private askService: AskService) {}
-  
-  
+              private askService: AskService,
+              private platform: Platform) {}
+
+  isAndroid: boolean;
+
   onClose(){
     if(navigator && navigator['app'])
       navigator['app'].exitApp();
@@ -28,6 +31,7 @@ export class HomePage  implements OnInit, OnDestroy{
   }
 
   ngOnInit() {
+    this.isAndroid = this.platform.is('android');
     if(environment.production) {
       this.serviceSubscription = this.askService.configServer()
                                   .subscribe(server => 
